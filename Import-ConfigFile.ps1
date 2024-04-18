@@ -5,6 +5,10 @@ function Import-ConfigFile {
     .DESCRIPTION
         Imports config file via provided SourcePath based on its file type to be used with dot notation and iterated through
     .NOTES
+        Author: Nick Welter
+        Function Created: 03/28/2024
+        Function Updated: 04/17/2024
+
         Currently supported file types:
         .json
         .xml
@@ -27,7 +31,7 @@ function Import-ConfigFile {
             throw
         }else{
             try {
-                $SourcePath = Get-Item -Path "$SourcePath" -ErrorAction Stop
+                $ConfigFileSource = Get-Item -Path "$SourcePath" -Verbose -ErrorAction Stop
                 Write-Verbose -Message "Config file found."
             }
             catch {
@@ -38,13 +42,23 @@ function Import-ConfigFile {
     }
     process {
         #- import its contents
-        switch ($SourcePath.Extension) {
-            ".json" {$ConfigFile = Get-Content -Path $SourcePath | Out-String | ConvertFrom-Json }
-            ".xml" {$XMLFile = Get-Content -Path $SourcePath; $ConfigFile = [xml]$XMLFile }
-            ".ini" {$ConfigFile = Get-Content -Path $SourcePath | Select-Object -Skip 1 | ConvertFrom-StringData }
+        switch ($ConfigFileSource.Extension) {
+            ".json" {
+                $ConfigFile = Get-Content -Path $SourcePath | Out-String | ConvertFrom-Json 
+                Write-Verbose -Message "$($ConfigFileSource.Name) has been imported from a JSON file"
+            }
+            ".xml" {
+                $XMLFile = Get-Content -Path $SourcePath; $ConfigFile = [xml]$XMLFile
+                Write-Verbose -Message "$($ConfigFileSource.Name) has been imported from a XML file"
+            }
+            ".ini" {
+                $ConfigFile = Get-Content -Path $SourcePath | Select-Object -Skip 1 | ConvertFrom-StringData
+                Write-Verbose -Message "$($ConfigFileSource.Name) has been imported from a INI file"
+            }
             Default {
                 try {
                     $ConfigFile = Get-Content -Path $SourcePath
+                    Write-Verbose -Message "$($ConfigFileSource.Name) has been imported with default settings."
                 }
                 catch {
                     Write-Error -Message "Failed to read the configuration file at path '$SourcePath'. Error: $_"
@@ -52,7 +66,6 @@ function Import-ConfigFile {
                 }
             }
         }
-        Write-Verbose -Message "Config File Imported."
     }
     end {
         #- Return the contents of the config file
