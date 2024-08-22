@@ -24,11 +24,11 @@
 
 ```powershell
 Import-ConfigFile.ps1 -FilePath <string> [-Verbose]
-Parameters
--FilePath (string): Mandatory. The file path of the configuration file to be imported.
-
--Verbose (switch): Optional. Provides detailed output during the import process.
 ```
+
+### Parameters
+- FilePath (string): Mandatory. The file path of the configuration file to be imported.
+- Verbose (switch): Optional. Provides detailed output during the import process.
 
 ### Example
 ```powershell
