@@ -30,14 +30,14 @@ Parameters
 -Verbose (switch): Optional. Provides detailed output during the import process.
 ```
 
-## Example
+### Example
 ```powershell
 Import-ConfigFile.ps1 -FilePath "C:\path\to\config.json" -Verbose
 This command imports a JSON configuration file located at C:\path\to\config.json and provides verbose output during the import process.
 ```
 
 ## License
-This script is released under the MIT License.
+This script is released under the GPL-3.0 License.
 
 ## Contributions
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to submit a pull request or open an issue in the repository.
